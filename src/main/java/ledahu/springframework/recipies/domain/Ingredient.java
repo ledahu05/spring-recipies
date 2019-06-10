@@ -11,6 +11,11 @@ public class Ingredient {
     private String description;
     private BigDecimal amount;
 
+    public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom) {
+        this.description = description;
+        this.amount = amount;
+        this.uom = uom;
+    }
 
     @OneToOne(fetch = FetchType.EAGER)
     private UnitOfMeasure uom;
