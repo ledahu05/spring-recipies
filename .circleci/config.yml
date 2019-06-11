@@ -30,19 +30,14 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: mvn dependency:go-offline
-
       - save_cache:
           paths:
             - ~/.m2
           key: v1-dependencies-{‌{ checksum "pom.xml" }}
 
       # run tests! and gen code coverage
-      - run: mvn integration-test cobertura:cobertura
+      - run: mvn test
 
       - store_test_results:
           path: target/surefire-reports
 
-      - run:
-          name: Send to CodeCov
-          command: bash <(curl -s https://codecov.io/bash)
