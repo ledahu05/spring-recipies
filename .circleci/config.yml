@@ -22,7 +22,7 @@ jobs:
     - store_test_results:
         path: target/surefire-reports
     - store_artifacts:
-      path: target/spring5-recipe-app-0.0.1-SNAPSHOT.jar
+        path: target/spring5-recipe-app-0.0.1-SNAPSHOT.jar
   workflows:
     version: 2
     workflow:
