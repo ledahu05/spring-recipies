@@ -9,16 +9,22 @@ jobs:
     - checkout
     # Download and cache dependencies
     - restore_cache:
-      key: spring5-recipe-{‌{ checksum "pom.xml" }}
+        key:
+        - spring5-recipe-{‌{ checksum "pom.xml" }}
     - run: mvn install -DskipTests
     - run: mvn dependency:go-offline
     - save_cache:
-      paths:
-      - ~/.m2
-      key: spring-recipes-{‌{ checksum "pom.xml" }}
+        paths:
+        - ~/.m2
+        key: spring-recipes-{‌{ checksum "pom.xml" }}
     # run tests!
     - run: mvn package
     - store_test_results:
-      path: target/surefire-reports
+        path: target/surefire-reports
     - store_artifacts:
       path: target/spring5-recipe-app-0.0.1-SNAPSHOT.jar
+  workflows:
+    version: 2
+    workflow:
+      jobs:
+        - build
