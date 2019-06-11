@@ -4,6 +4,7 @@ import ledahu.springframework.recipies.domain.*;
 import ledahu.springframework.recipies.repository.CategoryRepository;
 import ledahu.springframework.recipies.repository.RecipeRepository;
 import ledahu.springframework.recipies.repository.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private final CategoryRepository categoryRepository;
@@ -31,7 +33,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     }
 
     private List<Recipe> getRecipes() {
-
+        log.debug("get recipes from boostrap");
         List<Recipe> recipes = new ArrayList<>(2);
 
         //get UOMs
