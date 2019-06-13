@@ -1,9 +1,12 @@
 package ledahu.springframework.recipies.services;
 
+import ledahu.springframework.recipies.converters.RecipeCommandToRecipe;
+import ledahu.springframework.recipies.converters.RecipeToRecipeCommand;
 import ledahu.springframework.recipies.domain.Recipe;
 import ledahu.springframework.recipies.repository.RecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -16,15 +19,22 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 public class RecipeServiceImplTest {
-    private RecipeServiceImpl recipeService;
+    @InjectMocks
+    RecipeServiceImpl recipeService;
 
     @Mock
-    private RecipeRepository recipeRepository;
+    RecipeRepository recipeRepository;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+       // recipeService = new RecipeServiceImpl(recipeRepository);
     }
 
     @Test

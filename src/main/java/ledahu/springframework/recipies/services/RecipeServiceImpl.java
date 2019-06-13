@@ -1,5 +1,8 @@
 package ledahu.springframework.recipies.services;
 
+import ledahu.springframework.recipies.commands.RecipeCommand;
+import ledahu.springframework.recipies.converters.RecipeCommandToRecipe;
+import ledahu.springframework.recipies.converters.RecipeToRecipeCommand;
 import ledahu.springframework.recipies.domain.Recipe;
 import ledahu.springframework.recipies.repository.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +15,13 @@ import java.util.Set;
 @Service
 public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
+    private final RecipeCommandToRecipe recipeCommandToRecipe;
+    private final RecipeToRecipeCommand recipeToRecipeCommand;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository, RecipeCommandToRecipe recipeCommandToRecipe, RecipeToRecipeCommand recipeToRecipeCommand) {
         this.recipeRepository = recipeRepository;
+        this.recipeCommandToRecipe = recipeCommandToRecipe;
+        this.recipeToRecipeCommand = recipeToRecipeCommand;
     }
 
     @Override
@@ -28,5 +35,13 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe findById(Long id) {
         return recipeRepository.findById(id).orElseThrow(() -> new RuntimeException("Recipe not found"));
+    }
+
+    @Override
+    public RecipeCommand saveRecipeCommand(RecipeCommand command) {
+        Recipe detachedRecipe = recipeCommandToRecipe.convert(command);
+        Recipe savedRecipe = recipeRepository.save(detachedRecipe);
+        log.debug("Saved recipeid: " + savedRecipe.getId());
+        return recipeToRecipeCommand.convert(savedRecipe);
     }
 }
