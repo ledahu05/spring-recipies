@@ -2,6 +2,7 @@ package guru.springframework.controllers;
 
 
 import ledahu.springframework.recipies.commands.RecipeCommand;
+import ledahu.springframework.recipies.controllers.ControllerExceptionHandler;
 import ledahu.springframework.recipies.controllers.RecipeController;
 import ledahu.springframework.recipies.domain.Recipe;
 import ledahu.springframework.recipies.exceptions.NotFoundException;
@@ -38,7 +39,10 @@ public class RecipeControllerTest {
         MockitoAnnotations.initMocks(this);
 
         controller = new RecipeController(recipeService);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(controller)
+                .setControllerAdvice(ControllerExceptionHandler.class)
+                .build();
     }
 
     @Test
@@ -101,6 +105,16 @@ public class RecipeControllerTest {
         mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("404error"));
+    }
+
+    @Test
+    public void testGetRecipeBadId() throws Exception {
+
+//        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/recipe/abc/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
     }
 
 
