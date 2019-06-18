@@ -4,6 +4,7 @@ import ledahu.springframework.recipies.commands.RecipeCommand;
 import ledahu.springframework.recipies.converters.RecipeCommandToRecipe;
 import ledahu.springframework.recipies.converters.RecipeToRecipeCommand;
 import ledahu.springframework.recipies.domain.Recipe;
+import ledahu.springframework.recipies.exceptions.NotFoundException;
 import ledahu.springframework.recipies.repository.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe findById(Long id) {
-        return recipeRepository.findById(id).orElseThrow(() -> new RuntimeException("Recipe not found"));
+        return recipeRepository.findById(id).orElseThrow(() -> new NotFoundException("Recipe not found"));
     }
 
     @Override
