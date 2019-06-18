@@ -4,6 +4,7 @@ package guru.springframework.controllers;
 import ledahu.springframework.recipies.commands.RecipeCommand;
 import ledahu.springframework.recipies.controllers.RecipeController;
 import ledahu.springframework.recipies.domain.Recipe;
+import ledahu.springframework.recipies.exceptions.NotFoundException;
 import ledahu.springframework.recipies.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -92,7 +93,15 @@ public class RecipeControllerTest {
         verify(recipeService, times(1)).deleteById(anyLong());
     }
 
+    @Test
+    public void testGetRecipeNotFound() throws Exception {
 
+        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
+    }
 
 
 }
